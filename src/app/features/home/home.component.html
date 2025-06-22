@@ -1,0 +1,464 @@
+<div class="min-h-screen bg-gradient-to-br from-primary-50 to-blue-100">
+  <!-- Hero Section -->
+  <section class="relative py-20 px-4 sm:px-6 lg:px-8" role="banner">
+    <div class="max-w-7xl mx-auto">
+      <div class="text-center mb-12">
+        <h1
+          class="text-4xl md:text-6xl font-bold text-gray-900 mb-6 animate-fade-in"
+        >
+          Travel Comfortably with
+          <span class="text-primary-600">BusGo</span>
+        </h1>
+        <p class="text-xl text-gray-600 max-w-3xl mx-auto animate-fade-in">
+          Book your bus tickets online and enjoy a comfortable journey to your
+          destination. Compare prices, choose your seats, and travel with
+          confidence.
+        </p>
+      </div>
+
+      <!-- Search Form -->
+      <div class="max-w-4xl mx-auto">
+        <form
+          [formGroup]="searchForm"
+          (ngSubmit)="onSearch()"
+          class="bg-white rounded-2xl shadow-xl p-6 md:p-8 animate-slide-up"
+          role="search"
+          aria-label="Bus ticket search"
+        >
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-4 md:gap-6">
+            <!-- From -->
+            <div class="space-y-2">
+              <label for="from" class="block text-sm font-medium text-gray-700">
+                From
+              </label>
+              <div class="relative">
+                <input
+                  id="from"
+                  type="text"
+                  formControlName="from"
+                  placeholder="Departure city"
+                  class="input-field pl-10"
+                  [class.border-red-300]="
+                    searchForm.get('from')?.invalid &&
+                    searchForm.get('from')?.touched
+                  "
+                  aria-describedby="from-error"
+                  autocomplete="off"
+                />
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  searchForm.get('from')?.invalid &&
+                  searchForm.get('from')?.touched
+                "
+                id="from-error"
+                class="text-red-600 text-sm"
+                role="alert"
+              >
+                Departure city is required
+              </div>
+            </div>
+
+            <!-- To -->
+            <div class="space-y-2">
+              <label for="to" class="block text-sm font-medium text-gray-700">
+                To
+              </label>
+              <div class="relative">
+                <input
+                  id="to"
+                  type="text"
+                  formControlName="to"
+                  placeholder="Destination city"
+                  class="input-field pl-10"
+                  [class.border-red-300]="
+                    searchForm.get('to')?.invalid &&
+                    searchForm.get('to')?.touched
+                  "
+                  aria-describedby="to-error"
+                  autocomplete="off"
+                />
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"
+                    ></path>
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  searchForm.get('to')?.invalid && searchForm.get('to')?.touched
+                "
+                id="to-error"
+                class="text-red-600 text-sm"
+                role="alert"
+              >
+                Destination city is required
+              </div>
+            </div>
+
+            <!-- Date -->
+            <div class="space-y-2">
+              <label for="date" class="block text-sm font-medium text-gray-700">
+                Travel Date
+              </label>
+              <div class="relative">
+                <input
+                  id="date"
+                  type="date"
+                  formControlName="date"
+                  class="input-field pl-10"
+                  [class.border-red-300]="
+                    searchForm.get('date')?.invalid &&
+                    searchForm.get('date')?.touched
+                  "
+                  [min]="minDate"
+                  aria-describedby="date-error"
+                />
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div
+                *ngIf="
+                  searchForm.get('date')?.invalid &&
+                  searchForm.get('date')?.touched
+                "
+                id="date-error"
+                class="text-red-600 text-sm"
+                role="alert"
+              >
+                Travel date is required
+              </div>
+            </div>
+
+            <!-- Passengers -->
+            <div class="space-y-2">
+              <label
+                for="passengers"
+                class="block text-sm font-medium text-gray-700"
+              >
+                Passengers
+              </label>
+              <div class="relative">
+                <select
+                  id="passengers"
+                  formControlName="passengers"
+                  class="input-field pl-10 appearance-none"
+                  aria-describedby="passengers-help"
+                >
+                  <option value="1">1 Passenger</option>
+                  <option value="2">2 Passengers</option>
+                  <option value="3">3 Passengers</option>
+                  <option value="4">4 Passengers</option>
+                  <option value="5">5+ Passengers</option>
+                </select>
+                <div
+                  class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    aria-hidden="true"
+                  >
+                    <path
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                    ></path>
+                  </svg>
+                </div>
+                <div
+                  class="absolute inset-y-0 right-0 pr-3 flex items-center pointer-events-none"
+                >
+                  <svg
+                    class="h-5 w-5 text-gray-400"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    aria-hidden="true"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                </div>
+              </div>
+              <div id="passengers-help" class="text-xs text-gray-500">
+                Select number of passengers
+              </div>
+            </div>
+          </div>
+
+          <!-- Search Button -->
+          <div class="mt-6 flex justify-center">
+            <button
+              type="submit"
+              [disabled]="searchForm.invalid || isSearching"
+              class="btn-primary px-8 py-3 text-lg font-semibold disabled:opacity-50 disabled:cursor-not-allowed flex items-center space-x-2"
+              [attr.aria-busy]="isSearching"
+            >
+              <svg
+                *ngIf="isSearching"
+                class="animate-spin h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"
+                ></path>
+              </svg>
+              <svg
+                *ngIf="!isSearching"
+                class="h-5 w-5"
+                fill="none"
+                stroke="currentColor"
+                viewBox="0 0 24 24"
+                aria-hidden="true"
+              >
+                <path
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                ></path>
+              </svg>
+              <span>{{ isSearching ? "Searching..." : "Search Buses" }}</span>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="py-16 bg-white" aria-labelledby="features-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 id="features-heading" class="text-3xl font-bold text-gray-900 mb-4">
+          Why Choose BusGo?
+        </h2>
+        <p class="text-lg text-gray-600 max-w-2xl mx-auto">
+          Experience the best in bus travel with our premium services and
+          customer-first approach.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <div
+          class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-primary-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">Best Prices</h3>
+          <p class="text-gray-600">
+            Compare prices from multiple operators and find the best deals for
+            your journey.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-primary-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">
+            Safe & Secure
+          </h3>
+          <p class="text-gray-600">
+            Your safety is our priority. All our partner operators meet strict
+            safety standards.
+          </p>
+        </div>
+
+        <div
+          class="text-center p-6 rounded-lg hover:shadow-lg transition-shadow duration-300"
+        >
+          <div
+            class="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4"
+          >
+            <svg
+              class="h-8 w-8 text-primary-600"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+              ></path>
+            </svg>
+          </div>
+          <h3 class="text-xl font-semibold text-gray-900 mb-2">24/7 Support</h3>
+          <p class="text-gray-600">
+            Our customer support team is available round the clock to assist you
+            with any queries.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Popular Routes Section -->
+  <section class="py-16 bg-gray-50" aria-labelledby="routes-heading">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h2 id="routes-heading" class="text-3xl font-bold text-gray-900 mb-4">
+          Popular Routes
+        </h2>
+        <p class="text-lg text-gray-600">
+          Discover the most traveled routes and plan your next adventure.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          *ngFor="let route of popularRoutes"
+          class="bg-white rounded-lg shadow-sm border border-gray-200 p-6 hover:shadow-md transition-shadow duration-300 cursor-pointer"
+          (click)="searchRoute(route)"
+          [attr.aria-label]="
+            'Search buses from ' + route.from + ' to ' + route.to
+          "
+          tabindex="0"
+          (keydown.enter)="searchRoute(route)"
+          (keydown.space)="searchRoute(route)"
+        >
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center space-x-3">
+              <div class="w-3 h-3 bg-primary-600 rounded-full"></div>
+              <span class="font-medium text-gray-900">{{ route.from }}</span>
+            </div>
+            <svg
+              class="h-5 w-5 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
+              aria-hidden="true"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M17 8l4 4m0 0l-4 4m4-4H3"
+              ></path>
+            </svg>
+            <div class="flex items-center space-x-3">
+              <span class="font-medium text-gray-900">{{ route.to }}</span>
+              <div class="w-3 h-3 bg-red-500 rounded-full"></div>
+            </div>
+          </div>
+          <div class="text-sm text-gray-600 mb-2">
+            Starting from
+            <span class="font-semibold text-primary-600"
+              >${{ route.startingPrice }}</span
+            >
+          </div>
+          <div class="text-xs text-gray-500">
+            {{ route.operators }} operators • {{ route.dailyTrips }} daily trips
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+</div>
